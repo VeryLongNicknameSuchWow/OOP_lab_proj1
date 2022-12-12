@@ -1,19 +1,24 @@
 package pl.rynbou.ooplab.element.animal
 
-import kotlin.random.Random
+import pl.rynbou.ooplab.SimulationProperties
 
-sealed interface AnimalMutationProvider {
-    fun mutate(gene: AnimalMoveGene): AnimalMoveGene
 
-    object RandomAnimalMutationProvider : AnimalMutationProvider {
-        override fun mutate(gene: AnimalMoveGene): AnimalMoveGene {
-            return AnimalMoveGene.getRandom()
+sealed class AnimalMutationProvider(
+    protected val simulationProperties: SimulationProperties
+) {
+    abstract fun mutate(animal: Animal)
+
+    class RandomAnimalMutationProvider(simulationProperties: SimulationProperties) :
+        AnimalMutationProvider(simulationProperties) {
+        override fun mutate(animal: Animal) {
+            TODO()
         }
     }
 
-    object SubtleAnimalMutationProvider : AnimalMutationProvider {
-        override fun mutate(gene: AnimalMoveGene): AnimalMoveGene {
-            return gene.next(Random.nextInt(-1, 2))
+    class SubtleAnimalMutationProvider(simulationProperties: SimulationProperties) :
+        AnimalMutationProvider(simulationProperties) {
+        override fun mutate(animal: Animal) {
+            TODO()
         }
     }
 }

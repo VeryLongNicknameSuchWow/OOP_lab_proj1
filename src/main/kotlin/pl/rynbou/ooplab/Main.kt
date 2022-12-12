@@ -1,8 +1,5 @@
 package pl.rynbou.ooplab
 
-import pl.rynbou.ooplab.element.animal.AbstractAnimalGenome
-import pl.rynbou.ooplab.element.animal.AnimalBehaviourProvider
-
 fun main(args: Array<String>) {
     println("Hello World!")
 

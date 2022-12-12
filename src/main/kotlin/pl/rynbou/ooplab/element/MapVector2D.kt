@@ -1,7 +1,9 @@
 package pl.rynbou.ooplab.element
 
+import pl.rynbou.ooplab.SimulationProperties
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 data class MapVector2D(val x: Int, val y: Int) {
     fun add(other: MapVector2D): MapVector2D {
@@ -30,5 +32,14 @@ data class MapVector2D(val x: Int, val y: Int) {
 
     fun lowerLeft(other: MapVector2D): MapVector2D {
         return MapVector2D(min(this.x, other.x), min(this.y, other.y))
+    }
+
+    companion object {
+        fun randomVectorInBounds(simulationProperties: SimulationProperties): MapVector2D {
+            return MapVector2D(
+                Random.nextInt(simulationProperties.mapWidth),
+                Random.nextInt(simulationProperties.mapHeight)
+            )
+        }
     }
 }

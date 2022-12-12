@@ -1,7 +1,10 @@
 package pl.rynbou.ooplab.map
 
 import pl.rynbou.ooplab.SimulationProperties
+import pl.rynbou.ooplab.element.animal.Animal
 
 sealed class MapMoveSpecificationProvider(simulationProperties: SimulationProperties) {
-    fun calculateNewPosition()
+    abstract fun calculateNewPosition(animal: Animal)
+
+    
 }
