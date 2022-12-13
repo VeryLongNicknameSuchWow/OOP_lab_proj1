@@ -1,10 +1,11 @@
 package pl.rynbou.ooplab.map
 
+import pl.rynbou.ooplab.SimulationProperties
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
 import java.util.*
 
-open class MapAnimalStorage {
+open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
     protected val animals: MutableSet<Animal> = HashSet()
     protected val animalMap: MutableMap<MapVector2D, NavigableSet<Animal>> = HashMap()
 
