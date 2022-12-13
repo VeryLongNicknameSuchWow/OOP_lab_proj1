@@ -4,11 +4,11 @@ import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
 import java.util.*
 
-class MapAnimalStorage {
-    private val animals: MutableSet<Animal> = HashSet()
-    private val animalMap: MutableMap<MapVector2D, NavigableSet<Animal>> = HashMap()
+open class MapAnimalStorage {
+    protected val animals: MutableSet<Animal> = HashSet()
+    protected val animalMap: MutableMap<MapVector2D, NavigableSet<Animal>> = HashMap()
 
-    fun addAnimal(animal: Animal) {
+    open fun addAnimal(animal: Animal) {
         animals.add(animal)
         animalMap.getOrPut(animal.position) {
             TreeSet(compareByDescending {
@@ -25,4 +25,9 @@ class MapAnimalStorage {
     fun getAnimals(vector2D: MapVector2D): NavigableSet<Animal> {
         return Collections.unmodifiableNavigableSet(animalMap[vector2D] ?: TreeSet())
     }
+
+    fun getAnimalsCount(): Int {
+        return animals.size;
+    }
+
 }
