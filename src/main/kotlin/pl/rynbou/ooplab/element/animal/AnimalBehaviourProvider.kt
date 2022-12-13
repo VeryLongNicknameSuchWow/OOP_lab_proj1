@@ -6,24 +6,24 @@ import kotlin.random.Random
 sealed class AnimalBehaviourProvider(simulationProperties: SimulationProperties) {
     protected val maxHeight = simulationProperties.genomeLength
 
-    abstract fun getNextMoveHeight(currentHeight: Int): Int
+    abstract fun setNextGene(animal: Animal)
 
     class PredeterminedAnimalBehaviourProvider(simulationProperties: SimulationProperties) :
         AnimalBehaviourProvider(simulationProperties) {
 
-        override fun getNextMoveHeight(currentHeight: Int): Int {
-            return (currentHeight + 1) % maxHeight
+        override fun setNextGene(animal: Animal) {
+            animal.currentGeneIndex = (animal.currentGeneIndex + 1) % maxHeight
         }
     }
 
     class ChaoticAnimalBehaviourProvider(simulationProperties: SimulationProperties) :
         AnimalBehaviourProvider(simulationProperties) {
 
-        override fun getNextMoveHeight(currentHeight: Int): Int {
-            return if (Random.nextDouble() < 0.2)
-                Random.nextInt(maxHeight)
+        override fun setNextGene(animal: Animal) {
+            if (Random.nextDouble() < 0.2)
+                animal.currentGeneIndex = (animal.currentGeneIndex + Random.nextInt(maxHeight)) % maxHeight
             else
-                (currentHeight + 1) % maxHeight
+                animal.currentGeneIndex = (animal.currentGeneIndex + 1) % maxHeight
         }
     }
 }

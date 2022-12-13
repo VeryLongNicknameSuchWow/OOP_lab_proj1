@@ -12,7 +12,8 @@ data class Animal(
     var birthEpoch: Int,
     var age: Int,
     var energy: Int,
-    val genome: MutableList<AnimalMoveGene>
+    val genome: MutableList<AnimalMoveGene>,
+    var currentGeneIndex: Int
 ) {
 
     fun createChild(other: Animal): Animal {
@@ -37,7 +38,8 @@ data class Animal(
             genome = MutableList(genomeSize) {
                 val index = if (takeThisFront) it else genomeSize - it
                 if (it < thisShare) this.genome[index] else other.genome[index]
-            }
+            },
+            currentGeneIndex = 0
         )
 
         return child
