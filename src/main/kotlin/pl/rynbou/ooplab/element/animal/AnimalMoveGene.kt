@@ -1,5 +1,8 @@
 package pl.rynbou.ooplab.element.animal
 
+import pl.rynbou.ooplab.element.MapVector2D
+import kotlin.math.abs
+
 enum class AnimalMoveGene(val rotation: Int) {
     DoNothing(0),
     RotateRight45(1),
@@ -12,6 +15,14 @@ enum class AnimalMoveGene(val rotation: Int) {
 
     fun next(steps: Int): AnimalMoveGene {
         return cachedValues[(ordinal + steps) % cachedSize]
+    }
+
+    operator fun inc(): AnimalMoveGene {
+        return AnimalMoveGene.values()[(this.ordinal + 1) % 8]
+    }
+
+    operator fun dec(): AnimalMoveGene {
+        return AnimalMoveGene.values()[(this.ordinal + 7) % 8]
     }
 
     companion object {
