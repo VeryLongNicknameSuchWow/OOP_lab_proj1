@@ -15,9 +15,10 @@ class Map(
     val mapMoveSpecificationProvider: MapMoveSpecificationProvider,
     val plantGrowthProvider: PlantGrowthProvider,
     val animalMutationProvider: AnimalMutationProvider,
-    val animalBehaviourProvider: AnimalBehaviourProvider
+    val animalBehaviourProvider: AnimalBehaviourProvider,
+    val mapGeometryProvider: MapGeometryProvider
 ) {
-    val animalStorage = MapAnimalStorage()
+    val animalStorage = MapAnimalStorage(simulationProperties)
     val plantStorage = MapPlantStorage()
     var currentEpoch = 0
 
