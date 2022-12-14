@@ -21,7 +21,7 @@ enum class MapElementCardinalDirection(
     }
 
     fun toMapVector2D(): MapVector2D {
-        return when(this) {
+        return when (this) {
             NORTH -> MapVector2D(0, 1)
             NORTHEAST -> MapVector2D(1, 1)
             EAST -> MapVector2D(1, 0)

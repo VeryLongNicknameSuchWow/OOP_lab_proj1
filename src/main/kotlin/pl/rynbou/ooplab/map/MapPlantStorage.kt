@@ -1,8 +1,7 @@
 package pl.rynbou.ooplab.map
 
-import pl.rynbou.ooplab.element.plant.Plant
 import pl.rynbou.ooplab.element.MapVector2D
-import java.util.HashMap
+import pl.rynbou.ooplab.element.plant.Plant
 
 class MapPlantStorage {
     private val plantMap: MutableMap<MapVector2D, Plant> = HashMap()

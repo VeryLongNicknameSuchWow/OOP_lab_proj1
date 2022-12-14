@@ -10,7 +10,7 @@ import pl.rynbou.ooplab.element.animal.AnimalMutationProvider
 import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
 
 
-class Map(
+class WorldMap(
     val simulationProperties: SimulationProperties,
     val mapMoveSpecificationProvider: MapMoveSpecificationProvider,
     val plantGrowthProvider: PlantGrowthProvider,
@@ -19,6 +19,7 @@ class Map(
     val mapGeometryProvider: MapGeometryProvider
 ) {
     val animalStorage = MapAnimalStorage(simulationProperties)
+    val deadAnimalStorage = MapDeadAnimalStorage(simulationProperties)
     val plantStorage = MapPlantStorage()
     var currentEpoch = 0
 

@@ -1,8 +1,5 @@
 package pl.rynbou.ooplab.element.animal
 
-import pl.rynbou.ooplab.element.MapVector2D
-import kotlin.math.abs
-
 enum class AnimalMoveGene(val rotation: Int) {
     DoNothing(0),
     RotateRight45(1),

@@ -4,22 +4,26 @@ import pl.rynbou.ooplab.SimulationProperties
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
 
-sealed class MapMoveSpecificationProvider(simulationProperties: SimulationProperties, map: pl.rynbou.ooplab.map.Map) {
+sealed class MapMoveSpecificationProvider(simulationProperties: SimulationProperties, worldMap: WorldMap) {
 
-    val mapGeometryProvider: MapGeometryProvider = map.mapGeometryProvider
+    val mapGeometryProvider: MapGeometryProvider = worldMap.mapGeometryProvider
 
     abstract fun calculateNewPosition(animal: Animal): MapVector2D
 
-    class GlobeMapMoveSpecificationProvider(simulationProperties: SimulationProperties, map: pl.rynbou.ooplab.map.Map): MapMoveSpecificationProvider(simulationProperties, map) {
+    class GlobeMapMoveSpecificationProvider(simulationProperties: SimulationProperties, worldMap: WorldMap) :
+        MapMoveSpecificationProvider(simulationProperties, worldMap) {
         override fun calculateNewPosition(animal: Animal): MapVector2D {
             return mapGeometryProvider.transformCoordinates(animal.cardinalDirection.toMapVector2D())
         }
     }
 
-    class PortalMapMoveSpecificationProvider(simulationProperties: SimulationProperties, map: pl.rynbou.ooplab.map.Map): MapMoveSpecificationProvider(simulationProperties, map) {
+    class PortalMapMoveSpecificationProvider(
+        simulationProperties: SimulationProperties,
+        worldMap: WorldMap
+    ) : MapMoveSpecificationProvider(simulationProperties, worldMap) {
         override fun calculateNewPosition(animal: Animal): MapVector2D {
             return mapGeometryProvider.transformCoordinates(animal.cardinalDirection.toMapVector2D())
         }
     }
-    
+
 }

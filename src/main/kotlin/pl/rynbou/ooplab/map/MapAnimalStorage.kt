@@ -7,7 +7,7 @@ import java.util.*
 
 open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
     protected val animals: MutableSet<Animal> = HashSet()
-    protected val animalMap: MutableMap<MapVector2D, NavigableSet<Animal>> = HashMap()
+    private val animalMap: MutableMap<MapVector2D, NavigableSet<Animal>> = HashMap()
 
     open fun addAnimal(animal: Animal) {
         animals.add(animal)
@@ -23,8 +23,12 @@ open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
         animalMap[animal.position]?.remove(animal)
     }
 
-    fun getAnimals(vector2D: MapVector2D): NavigableSet<Animal> {
+    fun getAnimalsAt(vector2D: MapVector2D): NavigableSet<Animal> {
         return Collections.unmodifiableNavigableSet(animalMap[vector2D] ?: TreeSet())
+    }
+
+    fun getAllAnimals(): Set<Animal> {
+        return animals
     }
 
     fun getAnimalsCount(): Int {

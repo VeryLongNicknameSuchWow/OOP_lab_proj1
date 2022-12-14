@@ -11,13 +11,14 @@ sealed class MapGeometryProvider(simulationProperties: SimulationProperties) {
 
     abstract fun transformCoordinates(position: MapVector2D): MapVector2D
 
-    class GlobeMapGeometryProvider(simulationProperties: SimulationProperties): MapGeometryProvider(simulationProperties) {
+    class GlobeMapGeometryProvider(simulationProperties: SimulationProperties) :
+        MapGeometryProvider(simulationProperties) {
 
         override fun transformCoordinates(position: MapVector2D): MapVector2D {
-            if(position.y < 0)
+            if (position.y < 0)
                 return position
 
-            if(position.y > height)
+            if (position.y > height)
                 return position
 
             return MapVector2D(position.x % width, position.y)
@@ -25,10 +26,11 @@ sealed class MapGeometryProvider(simulationProperties: SimulationProperties) {
 
     }
 
-    class PortalMapGeometryProvider(simulationProperties: SimulationProperties): MapGeometryProvider(simulationProperties) {
+    class PortalMapGeometryProvider(simulationProperties: SimulationProperties) :
+        MapGeometryProvider(simulationProperties) {
 
         override fun transformCoordinates(position: MapVector2D): MapVector2D {
-            if(position.x in 0 until width && position.y in 0 until height)
+            if (position.x in 0 until width && position.y in 0 until height)
                 return position
 
             return MapVector2D(Random.nextInt() % width, Random.nextInt() % height)

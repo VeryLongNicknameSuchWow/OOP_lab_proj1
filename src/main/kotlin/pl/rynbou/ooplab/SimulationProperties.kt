@@ -12,6 +12,7 @@ data class SimulationProperties(
     val initialAnimals: Int,
     val initialAnimalEnergy: Int,
     val fullEnergyThreshold: Int,
+    val moveEnergyCost: Int,
     val copulationEnergyCost: Int,
 
     val mutationAmountLowerBound: Int,
