@@ -12,13 +12,14 @@ data class Animal(
     var birthEpoch: Int,
     var age: Int,
     var energy: Int,
+    var children: Int,
     val genome: MutableList<AnimalMoveGene>,
     var currentGeneIndex: Int
 ) {
 
     fun createChild(other: Animal): Animal {
         if (this.simulationProperties != other.simulationProperties) {
-            throw RuntimeException("Those animals are not compatible")
+            throw RuntimeException("Those animals are not compatible") // XD
         }
 
         this.energy -= this.simulationProperties.copulationEnergyCost
@@ -35,6 +36,7 @@ data class Animal(
             birthEpoch = birthEpoch + age, //TODO: CHECK
             age = 0,
             energy = this.simulationProperties.initialAnimalEnergy,
+            children = 0,
             genome = MutableList(genomeSize) {
                 val index = if (takeThisFront) it else genomeSize - it
                 if (it < thisShare) this.genome[index] else other.genome[index]
