@@ -7,13 +7,14 @@ import pl.rynbou.ooplab.map.WorldMap
 
 class Simulation(private val simulationProperties: SimulationProperties) { // "implements Runnable"
 
-    private val worldMap: WorldMap = pl.rynbou.ooplab.map.WorldMap(simulationProperties, null, null, null, null, null)
+    private val worldMap: WorldMap = WorldMap(simulationProperties, null, null, null, null, null)
     var trackedAnimal: Animal? = null
 
     fun nextEpoch() {
         removeDeadAnimals()
         growNewPlants()
         moveAnimals()
+        eatPlants()
         breedAnimals()
         saveStats()
         // Koniec epoki
@@ -24,7 +25,7 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
     }
 
     private fun removeDeadAnimals() {
-        for (animal in worldMap.animalStorage.getAllAnimals().filter { it.energy == 0 }) {
+        for (animal in worldMap.animalStorage.getAllAnimals().filter { it.energy <= 0 }) {
             worldMap.deadAnimalStorage.addAnimal(animal)
             worldMap.animalStorage.removeAnimal(animal)
         }
@@ -47,6 +48,10 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
         }
 
         // Zmień pozycje, poinformuj gui?
+    }
+
+    private fun eatPlants() {
+
     }
 
     private fun breedAnimals() {
