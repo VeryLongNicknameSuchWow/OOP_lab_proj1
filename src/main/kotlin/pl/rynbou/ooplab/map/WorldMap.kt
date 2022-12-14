@@ -12,11 +12,10 @@ import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
 
 class WorldMap(
     val simulationProperties: SimulationProperties,
-    val mapMoveSpecificationProvider: MapMoveSpecificationProvider,
+    val mapMoveProvider: MapMoveProvider,
     val plantGrowthProvider: PlantGrowthProvider,
     val animalMutationProvider: AnimalMutationProvider,
     val animalBehaviourProvider: AnimalBehaviourProvider,
-    val mapGeometryProvider: MapGeometryProvider
 ) {
     val animalStorage = MapAnimalStorage(simulationProperties)
     val deadAnimalStorage = MapDeadAnimalStorage(simulationProperties)

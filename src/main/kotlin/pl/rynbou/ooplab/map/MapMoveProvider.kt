@@ -2,18 +2,22 @@ package pl.rynbou.ooplab.map
 
 import pl.rynbou.ooplab.SimulationProperties
 import pl.rynbou.ooplab.element.MapVector2D
+import pl.rynbou.ooplab.element.animal.Animal
 import kotlin.random.Random
 
-sealed class MapGeometryProvider(simulationProperties: SimulationProperties) {
+sealed class MapMoveProvider(simulationProperties: SimulationProperties, worldMap: WorldMap) {
 
-    val width = simulationProperties.mapWidth
     val height = simulationProperties.mapHeight
+    val width = simulationProperties.mapWidth
 
     abstract fun transformCoordinates(position: MapVector2D): MapVector2D
 
-    class GlobeMapGeometryProvider(simulationProperties: SimulationProperties) :
-        MapGeometryProvider(simulationProperties) {
+    fun calculateNewPosition(animal: Animal): MapVector2D {
+        return transformCoordinates(animal.cardinalDirection.toMapVector2D())
+    }
 
+    class GlobeMapMoveProvider(simulationProperties: SimulationProperties, worldMap: WorldMap) :
+        MapMoveProvider(simulationProperties, worldMap) {
         override fun transformCoordinates(position: MapVector2D): MapVector2D {
             if (position.y < 0)
                 return position
@@ -23,11 +27,12 @@ sealed class MapGeometryProvider(simulationProperties: SimulationProperties) {
 
             return MapVector2D(position.x % width, position.y)
         }
-
     }
 
-    class PortalMapGeometryProvider(simulationProperties: SimulationProperties) :
-        MapGeometryProvider(simulationProperties) {
+    class PortalMapMoveProvider(
+        simulationProperties: SimulationProperties,
+        worldMap: WorldMap
+    ) : MapMoveProvider(simulationProperties, worldMap) {
 
         override fun transformCoordinates(position: MapVector2D): MapVector2D {
             if (position.x in 0 until width && position.y in 0 until height)

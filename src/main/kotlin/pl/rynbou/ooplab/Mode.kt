@@ -3,7 +3,7 @@ package pl.rynbou.ooplab
 import pl.rynbou.ooplab.element.animal.AnimalBehaviourProvider
 import pl.rynbou.ooplab.element.animal.AnimalMutationProvider
 import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
-import pl.rynbou.ooplab.map.MapGeometryProvider
+import pl.rynbou.ooplab.map.MapMoveProvider
 
 enum class MapMode {
     GlobeMap,
@@ -11,8 +11,8 @@ enum class MapMode {
 
     fun toProvider(): Any {
         return when (this) {
-            GlobeMap -> MapGeometryProvider.GlobeMapGeometryProvider::class
-            PortalMap -> MapGeometryProvider.PortalMapGeometryProvider::class
+            GlobeMap -> MapMoveProvider.GlobeMapMoveProvider::class
+            PortalMap -> MapMoveProvider.PortalMapMoveProvider::class
         }
     }
 }
@@ -29,7 +29,7 @@ enum class PlantGrowthMode {
     }
 }
 
-enum class GenotypeMutationMode {
+enum class AnimalMutationMode {
     RandomMutation,
     SubtleMutation;
 

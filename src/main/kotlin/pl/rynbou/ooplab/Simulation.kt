@@ -2,12 +2,23 @@ package pl.rynbou.ooplab
 
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
+import pl.rynbou.ooplab.element.animal.AnimalBehaviourProvider
+import pl.rynbou.ooplab.element.animal.AnimalMutationProvider
 import pl.rynbou.ooplab.element.plant.Plant
+import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
+import pl.rynbou.ooplab.map.MapMoveProvider
 import pl.rynbou.ooplab.map.WorldMap
 
 class Simulation(private val simulationProperties: SimulationProperties) { // "implements Runnable"
 
-    private val worldMap: WorldMap = WorldMap(simulationProperties, null, null, null, null, null)
+    private val worldMap: WorldMap = WorldMap(
+        simulationProperties,
+        simulationProperties.mapMode.toProvider() as MapMoveProvider,
+        simulationProperties.plantGrowthMode.toProvider() as PlantGrowthProvider,
+        simulationProperties.animalMutationMode.toProvider() as AnimalMutationProvider,
+        simulationProperties.animalBehaviourMode.toProvider() as AnimalBehaviourProvider,
+    )
+
     var trackedAnimal: Animal? = null
 
     fun nextEpoch() {
@@ -35,7 +46,7 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
         val newPositions: MutableList<MapVector2D> = mutableListOf()
 
         for (animal in worldMap.animalStorage.getAllAnimals()) {
-            val newPosition: MapVector2D = worldMap.mapMoveSpecificationProvider.calculateNewPosition(animal)
+            val newPosition: MapVector2D = worldMap.mapMoveProvider.calculateNewPosition(animal)
 
             newPositions.add(newPosition)
 

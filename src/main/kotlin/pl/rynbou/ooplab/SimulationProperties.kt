@@ -18,7 +18,7 @@ data class SimulationProperties(
     val moveEnergyCost: Int,
     val copulationEnergyCost: Int,
 
-    val genotypeMutationMode: GenotypeMutationMode,
+    val animalMutationMode: AnimalMutationMode,
     val mutationAmountLowerBound: Int,
     val mutationAmountUpperBound: Int,
     val genomeLength: Int,
