@@ -31,6 +31,7 @@ class WorldMap(
                     cardinalDirection = MapElementCardinalDirection.randomDirection(),
                     birthEpoch = currentEpoch,
                     age = 0,
+                    children = 0,
                     energy = simulationProperties.initialAnimalEnergy,
                     genome = MutableList(simulationProperties.genomeLength) { AnimalMoveGene.getRandom() },
                     currentGeneIndex = 0
