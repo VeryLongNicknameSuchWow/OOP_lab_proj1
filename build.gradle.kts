@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.21"
     application
+    id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 group = "pl.rynbou"
@@ -26,4 +27,8 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("pl.rynbou.ooplab.MainKt")
+}
+
+javafx {
+    modules("javafx.controls")
 }
