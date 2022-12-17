@@ -20,7 +20,7 @@ class WorldMap(
     val animalStorage = MapAnimalStorage(simulationProperties)
     val deadAnimalStorage = MapDeadAnimalStorage(simulationProperties)
     val plantStorage = MapPlantStorage()
-    var currentEpoch = 0
+    private var currentEpoch = 0
 
     init {
         for (i in 1..simulationProperties.initialAnimals) {
