@@ -38,8 +38,4 @@ class MapDeadAnimalStorage(simulationProperties: SimulationProperties) : MapAnim
         return bestStatPosition
     }
 
-    fun calculateAvgAge(): Float {
-        return animals.sumOf { it.age }.toFloat() / getAnimalsCount()
-    }
-
 }

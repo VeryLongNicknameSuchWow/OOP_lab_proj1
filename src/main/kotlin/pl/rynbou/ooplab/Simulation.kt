@@ -62,11 +62,36 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
     }
 
     private fun eatPlants() {
+        for (position in worldMap.animalStorage.getOccupiedPositions())
+            if (worldMap.plantStorage.getPlant(position) != null) {
+                worldMap.animalStorage.getAnimalsAt(position).first().energy += simulationProperties.plantEnergy
+                worldMap.plantStorage.removePlant(position)
+            }
 
+        // Inform GUI
     }
 
     private fun breedAnimals() {
+        for (position in worldMap.animalStorage.getOccupiedPositions()) {
+            val newAnimal: Animal? = worldMap.animalStorage
+                .getAnimalsAt(position)
+                .lower(
+                    worldMap
+                        .animalStorage
+                        .getAnimalsAt(position)
+                        .first()
+                )
+                ?.createChild(
+                    worldMap.animalStorage
+                        .getAnimalsAt(position)
+                        .first()
+                )
 
+            if (newAnimal != null)
+                worldMap.animalStorage.addAnimal(newAnimal)
+
+            // Inform GUI
+        }
     }
 
     private fun saveStats() {

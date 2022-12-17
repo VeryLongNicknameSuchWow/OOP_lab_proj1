@@ -10,11 +10,19 @@ class MapPlantStorage {
         plantMap[plant.position] = plant
     }
 
-    fun removePlant(plant: Plant): Plant? {
-        return plantMap.remove(plant.position)
+    fun removePlant(position: MapVector2D): Plant? {
+        return plantMap.remove(position)
     }
 
     fun getPlant(vector2D: MapVector2D): Plant? {
         return plantMap[vector2D]
+    }
+
+    fun getPlantsCount(): Int {
+        return plantMap.size
+    }
+
+    fun getOccupiedPositions(): Set<MapVector2D> {
+        return plantMap.keys
     }
 }
