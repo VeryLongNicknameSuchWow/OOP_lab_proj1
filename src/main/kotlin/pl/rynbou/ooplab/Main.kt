@@ -1,9 +1,9 @@
 package pl.rynbou.ooplab
 
-fun main(args: Array<String>) {
-    println("Hello World!")
+import javafx.application.Application
+import pl.rynbou.ooplab.gui.MainGui
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+
+fun main(args: Array<String>) {
+    Application.launch(MainGui::class.java, *args)
 }
