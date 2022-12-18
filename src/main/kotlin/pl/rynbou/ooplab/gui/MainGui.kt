@@ -1,12 +1,15 @@
 package pl.rynbou.ooplab.gui
 
 import javafx.application.Application
+import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.layout.GridPane
+import javafx.scene.text.Font
+import javafx.scene.text.FontWeight
 import javafx.stage.Stage
 import pl.rynbou.ooplab.*
 
@@ -16,6 +19,8 @@ class MainGui : Application() {
             items.addAll(MapMode.values())
             selectionModel.select(MapMode.values().first())
         }
+
+        //TODO adjust default values
 
         val mapWidthSpinner = Spinner<Int>(2, 100, 50)
         val mapHeightSpinner = Spinner<Int>(2, 100, 50)
@@ -50,6 +55,8 @@ class MainGui : Application() {
         val genomeLengthSpinner = Spinner<Int>(2, 100, 50)
 
         val startSimulationButton = Button("Start simulation").apply {
+            font = Font.font(null, FontWeight.BOLD, 20.0)
+
             setOnAction {
                 val simulationProperties = SimulationProperties(
                     mapModeComboBox.value,
@@ -76,9 +83,16 @@ class MainGui : Application() {
         }
 
         val root = GridPane().apply {
-            //TODO better layout
-            var rowIndex = 0
+            hgap = 10.0
+            vgap = 10.0
+            padding = Insets(20.0)
 
+            var rowIndex = 0
+            add(Label("Map settings").apply {
+                font = Font.font(null, FontWeight.BOLD, 20.0)
+            }, 0, rowIndex)
+
+            rowIndex++
             add(Label("Map mode: "), 0, rowIndex)
             add(mapModeComboBox, 1, rowIndex)
 
@@ -89,6 +103,11 @@ class MainGui : Application() {
             rowIndex++
             add(Label("Map height: "), 0, rowIndex)
             add(mapHeightSpinner, 1, rowIndex)
+
+            rowIndex++
+            add(Label("Plant settings").apply {
+                font = Font.font(null, FontWeight.BOLD, 20.0)
+            }, 0, rowIndex)
 
             rowIndex++
             add(Label("Plant growth mode: "), 0, rowIndex)
@@ -105,6 +124,11 @@ class MainGui : Application() {
             rowIndex++
             add(Label("Daily plants: "), 0, rowIndex)
             add(dailyPlantsSpinner, 1, rowIndex)
+
+            rowIndex++
+            add(Label("Animal settings").apply {
+                font = Font.font(null, FontWeight.BOLD, 20.0)
+            }, 0, rowIndex)
 
             rowIndex++
             add(Label("Animal behaviour mode: "), 0, rowIndex)
@@ -147,8 +171,8 @@ class MainGui : Application() {
             add(genomeLengthSpinner, 1, rowIndex)
 
             rowIndex++
-            add(Label("Start simulation: "), 0, rowIndex)
-            add(startSimulationButton, 1, rowIndex)
+            GridPane.setColumnSpan(startSimulationButton, 2)
+            add(startSimulationButton, 0, rowIndex)
         }
 
         val scene = Scene(root)
