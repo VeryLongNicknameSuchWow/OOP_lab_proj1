@@ -7,8 +7,8 @@ data class SimulationStatistics(
     val plantsCount: Int,
     val freeFieldsCount: Int,
     val dominantGenotype: Any,
-    val averageEnergy: Float,
-    val averageLifeSpan: Float,
+    val averageEnergy: Double,
+    val averageLifeSpan: Double,
 ) {
     companion object Statistics {
         private val simulationStatistics: MutableList<SimulationStatistics> = mutableListOf()
@@ -52,20 +52,18 @@ data class SimulationStatistics(
             TODO()
         }
 
-        private fun countAverageEnergy(worldMap: WorldMap): Float {
+        private fun countAverageEnergy(worldMap: WorldMap): Double {
             return worldMap.animalStorage
                 .getAllAnimals()
-                .sumOf { it.energy }
-                .toFloat()
-                .div(worldMap.animalStorage.getAnimalsCount())
+                .map { it.energy }
+                .average()
         }
 
-        private fun countAverageLifeSpan(worldMap: WorldMap): Float {
+        private fun countAverageLifeSpan(worldMap: WorldMap): Double {
             return worldMap.deadAnimalStorage
                 .getAllAnimals()
-                .sumOf { it.age }
-                .toFloat()
-                .div(worldMap.deadAnimalStorage.getAnimalsCount())
+                .map { it.energy }
+                .average()
         }
     }
 }
