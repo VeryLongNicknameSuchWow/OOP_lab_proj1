@@ -56,14 +56,16 @@ data class SimulationStatistics(
             return worldMap.animalStorage
                 .getAllAnimals()
                 .sumOf { it.energy }
-                .toFloat() / worldMap.animalStorage.getAnimalsCount()
+                .toFloat()
+                .div(worldMap.animalStorage.getAnimalsCount())
         }
 
         private fun countAverageLifeSpan(worldMap: WorldMap): Float {
             return worldMap.deadAnimalStorage
                 .getAllAnimals()
                 .sumOf { it.age }
-                .toFloat() / worldMap.deadAnimalStorage.getAnimalsCount()
+                .toFloat()
+                .div(worldMap.deadAnimalStorage.getAnimalsCount())
         }
     }
 }
