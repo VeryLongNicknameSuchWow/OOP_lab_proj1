@@ -4,15 +4,16 @@ import pl.rynbou.ooplab.element.animal.AnimalBehaviourProvider
 import pl.rynbou.ooplab.element.animal.AnimalMutationProvider
 import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
 import pl.rynbou.ooplab.map.MapMoveProvider
+import pl.rynbou.ooplab.map.WorldMap
 
 enum class MapMode {
     GlobeMap,
     PortalMap;
 
-    fun toProvider(): Any {
+    fun toProvider(simulationProperties: SimulationProperties, worldMap: WorldMap): MapMoveProvider {
         return when (this) {
-            GlobeMap -> MapMoveProvider.GlobeMapMoveProvider::class
-            PortalMap -> MapMoveProvider.PortalMapMoveProvider::class
+            GlobeMap -> MapMoveProvider.GlobeMapMoveProvider(simulationProperties, worldMap)
+            PortalMap -> MapMoveProvider.PortalMapMoveProvider(simulationProperties, worldMap)
         }
     }
 }
