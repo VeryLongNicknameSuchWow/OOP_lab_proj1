@@ -6,23 +6,21 @@ import pl.rynbou.ooplab.map.MapDeadAnimalStorage
 import pl.rynbou.ooplab.map.MapPlantStorage
 import kotlin.random.Random
 
-sealed class PlantGrowthProvider(simulationProperties: SimulationProperties) {
+sealed class PlantGrowthProvider(
+    simulationProperties: SimulationProperties,
+    protected val deadAnimalStorage: MapDeadAnimalStorage?
+) {
     protected val width = simulationProperties.mapWidth
     protected val height = simulationProperties.mapHeight
     protected val dailyPlants = simulationProperties.dailyPlants
 
-    abstract fun growNewPlants(
-        mapPlantStorage: MapPlantStorage,
-        mapDeadAnimalStorage: MapDeadAnimalStorage? = null
-    ): List<Plant>
+    abstract fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant>
 
-    class EquatorPreference(simulationProperties: SimulationProperties) : PlantGrowthProvider(simulationProperties) {
+    class EquatorPreference(simulationProperties: SimulationProperties) :
+        PlantGrowthProvider(simulationProperties, null) {
         private val equator = height / 2
 
-        override fun growNewPlants(
-            mapPlantStorage: MapPlantStorage,
-            mapDeadAnimalStorage: MapDeadAnimalStorage?
-        ): List<Plant> {
+        override fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant> {
             val newPlants: MutableList<Plant> = mutableListOf()
 
             for (i in 1..dailyPlants) {
@@ -46,15 +44,13 @@ sealed class PlantGrowthProvider(simulationProperties: SimulationProperties) {
 
     }
 
-    class ToxicFields(simulationProperties: SimulationProperties) : PlantGrowthProvider(simulationProperties) {
-        override fun growNewPlants(
-            mapPlantStorage: MapPlantStorage,
-            mapDeadAnimalStorage: MapDeadAnimalStorage?
-        ): List<Plant> {
+    class ToxicFields(simulationProperties: SimulationProperties, mapDeadAnimalStorage: MapDeadAnimalStorage?) :
+        PlantGrowthProvider(simulationProperties, mapDeadAnimalStorage) {
+        override fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant> {
             val newPlants: MutableList<Plant> = mutableListOf()
 
             for (i in 1..dailyPlants) {
-                val newPlant = Plant(getRandomFreePosition(mapPlantStorage, mapDeadAnimalStorage!!))
+                val newPlant = Plant(getRandomFreePosition(mapPlantStorage, deadAnimalStorage!!))
                 mapPlantStorage.addPlant(newPlant)
                 newPlants.add(newPlant)
             }

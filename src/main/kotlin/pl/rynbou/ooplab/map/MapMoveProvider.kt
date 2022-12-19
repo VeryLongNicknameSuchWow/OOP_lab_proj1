@@ -13,7 +13,7 @@ sealed class MapMoveProvider(simulationProperties: SimulationProperties, worldMa
     abstract fun transformCoordinates(position: MapVector2D): MapVector2D
 
     fun calculateNewPosition(animal: Animal): MapVector2D {
-        return transformCoordinates(animal.cardinalDirection.moveVector)
+        return transformCoordinates(animal.position.add(animal.cardinalDirection.moveVector))
     }
 
     class GlobeMapMoveProvider(simulationProperties: SimulationProperties, worldMap: WorldMap) :

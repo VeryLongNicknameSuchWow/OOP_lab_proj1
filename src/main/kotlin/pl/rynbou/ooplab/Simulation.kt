@@ -13,10 +13,10 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
 
     private val worldMap: WorldMap = WorldMap(
         simulationProperties,
-        simulationProperties.mapMode.toProvider() as MapMoveProvider,
-        simulationProperties.plantGrowthMode.toProvider() as PlantGrowthProvider,
-        simulationProperties.animalMutationMode.toProvider() as AnimalMutationProvider,
-        simulationProperties.animalBehaviourMode.toProvider() as AnimalBehaviourProvider,
+        simulationProperties.mapMode,
+        simulationProperties.plantGrowthMode,
+        simulationProperties.animalMutationMode,
+        simulationProperties.animalBehaviourMode,
     )
 
     var trackedAnimal: Animal? = null
@@ -25,6 +25,7 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
         removeDeadAnimals()
         growNewPlants()
         moveAnimals()
+        rotateAnimals()
         eatPlants()
         breedAnimals()
         saveStats()
@@ -33,6 +34,8 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
 
     private fun growNewPlants() {
         val newPlants: List<Plant> = worldMap.plantGrowthProvider.growNewPlants(worldMap.plantStorage)
+
+        // Powiedz gui, że ma nowe rośliny w liście i niech se przeczyta
     }
 
     private fun removeDeadAnimals() {
@@ -59,6 +62,15 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
         }
 
         // Zmień pozycje, poinformuj gui?
+    }
+
+    private fun rotateAnimals() {
+        worldMap.animalStorage.getAllAnimals()
+            .forEach {
+                apply {
+                    worldMap.animalBehaviourProvider.setNextGene(it)
+                }
+            }
     }
 
     private fun eatPlants() {

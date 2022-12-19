@@ -1,6 +1,8 @@
 package pl.rynbou.ooplab.statistics
 
 import pl.rynbou.ooplab.map.WorldMap
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 data class SimulationStatistics(
     val animalsCount: Int,
@@ -26,8 +28,27 @@ data class SimulationStatistics(
             )
         }
 
-        fun saveToFile() {
-            TODO()
+        fun saveToFile(fileName: String) {
+
+            fun OutputStream.writeCsv(simulationStatisticsList: List<SimulationStatistics>) {
+                val writer = bufferedWriter()
+                writer.write(""""Animals", "Plants", "Free Fields", "Dominant Genotype", "Avg. Energy", "Avg. Lifespan"""")
+                writer.newLine()
+                simulationStatisticsList.forEach {
+                    writer.write(
+                        "${it.animalsCount}, " +
+                                "${it.plantsCount}, " +
+                                "${it.freeFieldsCount}, " +
+                                "${it.dominantGenotype}, " +
+                                "${it.averageEnergy}, " +
+                                "${it.averageLifeSpan}"
+                    )
+                    writer.newLine()
+                }
+                writer.flush()
+            }
+
+            FileOutputStream("$(fileName).csv").apply { writeCsv(simulationStatistics) }
         }
 
         private fun countAnimals(worldMap: WorldMap): Int {

@@ -3,6 +3,7 @@ package pl.rynbou.ooplab
 import pl.rynbou.ooplab.element.animal.AnimalBehaviourProvider
 import pl.rynbou.ooplab.element.animal.AnimalMutationProvider
 import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
+import pl.rynbou.ooplab.map.MapDeadAnimalStorage
 import pl.rynbou.ooplab.map.MapMoveProvider
 import pl.rynbou.ooplab.map.WorldMap
 
@@ -22,10 +23,13 @@ enum class PlantGrowthMode {
     EquatorPreference,
     ToxicFields;
 
-    fun toProvider(): Any {
+    fun toProvider(
+        simulationProperties: SimulationProperties,
+        deadAnimalStorage: MapDeadAnimalStorage? = null
+    ): PlantGrowthProvider {
         return when (this) {
-            EquatorPreference -> PlantGrowthProvider.EquatorPreference::class
-            ToxicFields -> PlantGrowthProvider.ToxicFields::class
+            EquatorPreference -> PlantGrowthProvider.EquatorPreference(simulationProperties)
+            ToxicFields -> PlantGrowthProvider.ToxicFields(simulationProperties, deadAnimalStorage)
         }
     }
 }
@@ -34,10 +38,10 @@ enum class AnimalMutationMode {
     RandomMutation,
     SubtleMutation;
 
-    fun toProvider(): Any {
+    fun toProvider(simulationProperties: SimulationProperties): AnimalMutationProvider {
         return when (this) {
-            RandomMutation -> AnimalMutationProvider.RandomAnimalMutationProvider::class
-            SubtleMutation -> AnimalMutationProvider.SubtleAnimalMutationProvider::class
+            RandomMutation -> AnimalMutationProvider.RandomAnimalMutationProvider(simulationProperties)
+            SubtleMutation -> AnimalMutationProvider.SubtleAnimalMutationProvider(simulationProperties)
         }
     }
 }
@@ -46,10 +50,10 @@ enum class AnimalBehaviourMode {
     PredefinedBehaviour,
     ChaoticBehaviour;
 
-    fun toProvider(): Any {
+    fun toProvider(simulationProperties: SimulationProperties): AnimalBehaviourProvider {
         return when (this) {
-            PredefinedBehaviour -> AnimalBehaviourProvider.PredeterminedAnimalBehaviourProvider::class
-            ChaoticBehaviour -> AnimalBehaviourProvider.ChaoticAnimalBehaviourProvider::class
+            PredefinedBehaviour -> AnimalBehaviourProvider.PredeterminedAnimalBehaviourProvider(simulationProperties)
+            ChaoticBehaviour -> AnimalBehaviourProvider.ChaoticAnimalBehaviourProvider(simulationProperties)
         }
     }
 }
