@@ -10,8 +10,10 @@ import javafx.scene.control.Spinner
 import javafx.scene.layout.GridPane
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import javafx.stage.FileChooser
 import javafx.stage.Stage
 import pl.rynbou.ooplab.*
+import java.io.File
 
 class MainGui : Application() {
     override fun start(primaryStage: Stage) {
@@ -54,10 +56,26 @@ class MainGui : Application() {
         val mutationAmountUpperBoundSpinner = Spinner<Int>(2, 100, 50)
         val genomeLengthSpinner = Spinner<Int>(2, 100, 50)
 
+        val statisticsFilePath = Label("No file selected")
+        val statisticsFileChooser = FileChooser()
+        var file: File? = null
+        val chooseFileButton = Button("Choose statistics file").apply {
+            setOnAction {
+                file = statisticsFileChooser.showOpenDialog(primaryStage)
+                if (file != null) {
+                    statisticsFilePath.text = "Selected: " + file!!.canonicalPath
+                } else {
+                    statisticsFilePath.text = "No file selected"
+                }
+            }
+        }
+
         val startSimulationButton = Button("Start simulation").apply {
             font = Font.font(null, FontWeight.BOLD, 20.0)
 
             setOnAction {
+                val statisticsFile = file //TODO can be null
+
                 val simulationProperties = SimulationProperties(
                     mapModeComboBox.value,
                     mapWidthSpinner.value,
@@ -169,6 +187,15 @@ class MainGui : Application() {
             rowIndex++
             add(Label("Animal genome length: "), 0, rowIndex)
             add(genomeLengthSpinner, 1, rowIndex)
+
+            rowIndex++
+            add(Label("Statistics file").apply {
+                font = Font.font(null, FontWeight.BOLD, 20.0)
+            }, 0, rowIndex)
+
+            rowIndex++
+            add(statisticsFilePath, 0, rowIndex)
+            add(chooseFileButton, 1, rowIndex)
 
             rowIndex++
             GridPane.setColumnSpan(startSimulationButton, 2)
