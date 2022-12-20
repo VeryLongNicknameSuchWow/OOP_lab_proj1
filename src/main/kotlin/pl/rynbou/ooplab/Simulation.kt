@@ -93,8 +93,7 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
             val newAnimal: Animal? = worldMap.animalStorage
                 .getAnimalsAt(position)
                 .lower(
-                    worldMap
-                        .animalStorage
+                    worldMap.animalStorage
                         .getAnimalsAt(position)
                         .first()
                 )
@@ -107,9 +106,6 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
                     worldMap.animalStorage.addAnimal(this)
                     worldMap.animalMutationProvider.mutate(this)
                 }
-            if (newAnimal != null) {
-                worldMap.animalStorage.addAnimal(newAnimal)
-            }
 
             // Inform GUI
         }
