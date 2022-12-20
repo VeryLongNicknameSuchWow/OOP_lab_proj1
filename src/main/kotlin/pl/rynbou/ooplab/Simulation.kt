@@ -2,11 +2,7 @@ package pl.rynbou.ooplab
 
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
-import pl.rynbou.ooplab.element.animal.AnimalBehaviourProvider
-import pl.rynbou.ooplab.element.animal.AnimalMutationProvider
 import pl.rynbou.ooplab.element.plant.Plant
-import pl.rynbou.ooplab.element.plant.PlantGrowthProvider
-import pl.rynbou.ooplab.map.MapMoveProvider
 import pl.rynbou.ooplab.map.WorldMap
 
 class Simulation(private val simulationProperties: SimulationProperties) { // "implements Runnable"
@@ -20,6 +16,7 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
     )
 
     var trackedAnimal: Animal? = null
+    var currentEpoch = 0
 
     fun nextEpoch() {
         removeDeadAnimals()
@@ -29,7 +26,15 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
         eatPlants()
         breedAnimals()
         saveStats()
+        advanceTime() // w którym miejscu to powinno być?
         // Koniec epoki
+    }
+
+    private fun advanceTime() {
+        for (animal in worldMap.animalStorage.getAllAnimals()) {
+            animal.age += 1
+        }
+        currentEpoch += 1
     }
 
     private fun growNewPlants() {

@@ -26,8 +26,6 @@ class WorldMap(
     val animalMutationProvider: AnimalMutationProvider = animalMutationMode.toProvider(simulationProperties)
     val animalBehaviourProvider: AnimalBehaviourProvider = animalBehaviourMode.toProvider(simulationProperties)
 
-    private var currentEpoch = 0
-
     init {
         for (i in 1..simulationProperties.initialAnimals) {
             animalStorage.addAnimal(
@@ -35,7 +33,7 @@ class WorldMap(
                     simulationProperties = simulationProperties,
                     position = MapVector2D.randomVectorInBounds(simulationProperties),
                     cardinalDirection = MapElementCardinalDirection.randomDirection(),
-                    birthEpoch = currentEpoch,
+                    birthEpoch = 0,
                     age = 0,
                     children = 0,
                     energy = simulationProperties.initialAnimalEnergy,
