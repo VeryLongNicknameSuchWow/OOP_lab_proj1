@@ -84,7 +84,7 @@ data class SimulationStatistics(
         private fun countAverageLifeSpan(worldMap: WorldMap): Double {
             return worldMap.deadAnimalStorage
                 .getAllAnimals()
-                .map { it.energy }
+                .map { it.age }
                 .average()
         }
     }
