@@ -1,6 +1,7 @@
 package pl.rynbou.ooplab.statistics
 
 import pl.rynbou.ooplab.map.WorldMap
+import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
@@ -28,19 +29,19 @@ data class SimulationStatistics(
             )
         }
 
-        fun saveToFile(fileName: String) {
+        fun saveToFile(file: File) {
 
             fun OutputStream.writeCsv(simulationStatisticsList: List<SimulationStatistics>) {
                 val writer = bufferedWriter()
-                writer.write(""""Animals", "Plants", "Free Fields", "Dominant Genotype", "Avg. Energy", "Avg. Lifespan"""")
+                writer.write(""""Animals";"Plants";"Free Fields";"Dominant Genotype";"Avg. Energy";"Avg. Lifespan"""")
                 writer.newLine()
                 simulationStatisticsList.forEach {
                     writer.write(
-                        "${it.animalsCount}, " +
-                                "${it.plantsCount}, " +
-                                "${it.freeFieldsCount}, " +
-                                "${it.dominantGenotype}, " +
-                                "${it.averageEnergy}, " +
+                        "${it.animalsCount};" +
+                                "${it.plantsCount};" +
+                                "${it.freeFieldsCount};" +
+                                "${it.dominantGenotype};" +
+                                "${it.averageEnergy};" +
                                 "${it.averageLifeSpan}"
                     )
                     writer.newLine()
@@ -48,7 +49,7 @@ data class SimulationStatistics(
                 writer.flush()
             }
 
-            FileOutputStream("$(fileName).csv").apply { writeCsv(simulationStatistics) }
+            FileOutputStream(file).apply { writeCsv(simulationStatistics) }
         }
 
         private fun countAnimals(worldMap: WorldMap): Int {
