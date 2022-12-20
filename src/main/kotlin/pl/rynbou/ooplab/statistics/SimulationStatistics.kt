@@ -24,7 +24,7 @@ data class SimulationStatistics(
                     countFreeFields(worldMap),
                     findDominantGenotype(worldMap),
                     countAverageEnergy(worldMap),
-                    countAverageLifeSpan(worldMap)
+                    countAverageLifespan(worldMap)
                 )
             )
         }
@@ -81,7 +81,7 @@ data class SimulationStatistics(
                 .average()
         }
 
-        private fun countAverageLifeSpan(worldMap: WorldMap): Double {
+        private fun countAverageLifespan(worldMap: WorldMap): Double {
             return worldMap.deadAnimalStorage
                 .getAllAnimals()
                 .map { it.age }
