@@ -2,6 +2,7 @@ package pl.rynbou.ooplab.map
 
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.plant.Plant
+import java.util.*
 
 class MapPlantStorage {
     private val plantMap: MutableMap<MapVector2D, Plant> = HashMap()
@@ -23,6 +24,6 @@ class MapPlantStorage {
     }
 
     fun getOccupiedPositions(): Set<MapVector2D> {
-        return plantMap.keys
+        return Collections.unmodifiableSet(plantMap.keys)
     }
 }
