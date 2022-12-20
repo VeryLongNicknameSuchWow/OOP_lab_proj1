@@ -16,7 +16,7 @@ class MapDeadAnimalStorage(simulationProperties: SimulationProperties) : MapAnim
     }
 
     fun getStatsAtPosition(position: MapVector2D): Int {
-        return deathStats.getOrPut(position) { 0 }
+        return deathStats.getOrDefault(position, 0)
     }
 
     fun getStatsLocalMinimum(): MapVector2D {
