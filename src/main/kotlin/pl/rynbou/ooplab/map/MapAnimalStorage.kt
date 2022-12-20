@@ -28,11 +28,11 @@ open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
     }
 
     fun getAllAnimals(): Set<Animal> {
-        return animals
+        return Collections.unmodifiableSet(animals)
     }
 
     fun getOccupiedPositions(): Set<MapVector2D> {
-        return animalMap.keys
+        return Collections.unmodifiableSet(animalMap.keys)
     }
 
     fun getAnimalsCount(): Int {
