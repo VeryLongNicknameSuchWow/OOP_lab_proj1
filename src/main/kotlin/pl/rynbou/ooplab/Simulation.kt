@@ -107,6 +107,9 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
                     worldMap.animalStorage.addAnimal(this)
                     worldMap.animalMutationProvider.mutate(this)
                 }
+            if (newAnimal != null) {
+                worldMap.animalStorage.addAnimal(newAnimal)
+            }
 
             // Inform GUI
         }
