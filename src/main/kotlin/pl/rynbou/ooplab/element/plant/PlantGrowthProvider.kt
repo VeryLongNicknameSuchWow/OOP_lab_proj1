@@ -7,65 +7,54 @@ import pl.rynbou.ooplab.map.MapPlantStorage
 import kotlin.random.Random
 
 sealed class PlantGrowthProvider(
-    simulationProperties: SimulationProperties,
-    protected val deadAnimalStorage: MapDeadAnimalStorage?
+    simulationProperties: SimulationProperties, private val deadAnimalStorage: MapDeadAnimalStorage?
 ) {
     protected val width = simulationProperties.mapWidth
     protected val height = simulationProperties.mapHeight
-    protected val dailyPlants = simulationProperties.dailyPlants
+    private val dailyPlants = simulationProperties.dailyPlants
 
-    abstract fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant>
+    abstract fun getRandomFreePosition(
+        mapPlantStorage: MapPlantStorage, mapDeadAnimalStorage: MapDeadAnimalStorage?
+    ): MapVector2D
+
+    fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant> {
+        val newPlants: MutableList<Plant> = mutableListOf()
+
+        for (i in 1..dailyPlants) {
+            val newPlant = Plant(getRandomFreePosition(mapPlantStorage, deadAnimalStorage))
+            mapPlantStorage.addPlant(newPlant)
+            newPlants.add(newPlant)
+        }
+
+        return newPlants
+    }
 
     class EquatorPreference(simulationProperties: SimulationProperties) :
         PlantGrowthProvider(simulationProperties, null) {
-        private val equator = height / 2
+        private val equator: Double = height.toDouble() / 2
 
-        override fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant> {
-            val newPlants: MutableList<Plant> = mutableListOf()
-
-            for (i in 1..dailyPlants) {
-                val newPlant = Plant(getRandomFreePosition(mapPlantStorage))
-                mapPlantStorage.addPlant(newPlant)
-                newPlants.add(newPlant)
-            }
-
-            return newPlants
-        }
-
-        private fun getRandomFreePosition(mapPlantStorage: MapPlantStorage): MapVector2D {
+        override fun getRandomFreePosition(
+            mapPlantStorage: MapPlantStorage, mapDeadAnimalStorage: MapDeadAnimalStorage?
+        ): MapVector2D {
             val x = Random.nextInt() % width
-            val y = java.util.Random().nextGaussian(equator.toDouble(), height / 5.toDouble()).toInt() % height
+            val y = java.util.Random().nextGaussian(equator, height / 5.toDouble()).toInt() % height
             val position = MapVector2D(x, y)
 
-            return if (mapPlantStorage.getPlant(position) == null)
-                position
-            else getRandomFreePosition(mapPlantStorage)
+            return if (mapPlantStorage.getPlant(position) == null) position
+            else getRandomFreePosition(mapPlantStorage, null)
         }
 
     }
 
     class ToxicFields(simulationProperties: SimulationProperties, mapDeadAnimalStorage: MapDeadAnimalStorage?) :
         PlantGrowthProvider(simulationProperties, mapDeadAnimalStorage) {
-        override fun growNewPlants(mapPlantStorage: MapPlantStorage): List<Plant> {
-            val newPlants: MutableList<Plant> = mutableListOf()
 
-            for (i in 1..dailyPlants) {
-                val newPlant = Plant(getRandomFreePosition(mapPlantStorage, deadAnimalStorage!!))
-                mapPlantStorage.addPlant(newPlant)
-                newPlants.add(newPlant)
-            }
-
-            return newPlants
-        }
-
-        private fun getRandomFreePosition(
-            mapPlantStorage: MapPlantStorage,
-            mapDeadAnimalStorage: MapDeadAnimalStorage
+        override fun getRandomFreePosition(
+            mapPlantStorage: MapPlantStorage, mapDeadAnimalStorage: MapDeadAnimalStorage?
         ): MapVector2D {
-            val position = mapDeadAnimalStorage.getStatsLocalMinimum()
+            val position = mapDeadAnimalStorage!!.getStatsLocalMinimum()
 
-            return if (mapPlantStorage.getPlant(position) == null)
-                position
+            return if (mapPlantStorage.getPlant(position) == null) position
             else getRandomFreePosition(mapPlantStorage, mapDeadAnimalStorage)
         }
 
