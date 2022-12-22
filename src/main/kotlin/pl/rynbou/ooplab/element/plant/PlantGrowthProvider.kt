@@ -13,7 +13,7 @@ sealed class PlantGrowthProvider(
     protected val height = simulationProperties.mapHeight
     private val dailyPlants = simulationProperties.dailyPlants
 
-    abstract fun getRandomFreePosition(
+    protected abstract fun getRandomFreePosition(
         mapPlantStorage: MapPlantStorage, mapDeadAnimalStorage: MapDeadAnimalStorage?
     ): MapVector2D
 
