@@ -4,8 +4,9 @@ import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
 import pl.rynbou.ooplab.element.plant.Plant
 import pl.rynbou.ooplab.map.WorldMap
+import pl.rynbou.ooplab.statistics.StatisticsProvider
 
-class Simulation(private val simulationProperties: SimulationProperties) { // "implements Runnable"
+class Simulation(private val simulationProperties: SimulationProperties) : Runnable { // "implements Runnable"
 
     private val worldMap: WorldMap = WorldMap(
         simulationProperties,
@@ -18,14 +19,16 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
     var trackedAnimal: Animal? = null
     var currentEpoch = 0
 
+    val statisticsProvider = StatisticsProvider()
+
     fun nextEpoch() {
+        statisticsProvider.saveCurrentStatistics(worldMap)
         removeDeadAnimals()
         growNewPlants()
         moveAnimals()
         rotateAnimals()
         eatPlants()
         breedAnimals()
-        saveStats()
         advanceTime() // w którym miejscu to powinno być?
         // Koniec epoki
     }
@@ -111,8 +114,19 @@ class Simulation(private val simulationProperties: SimulationProperties) { // "i
         }
     }
 
-    private fun saveStats() {
-        // Zapisać wszystkie haszmapy do tablicy/pliku? XD
+    override fun run() {
+        try {
+            do {
+                nextEpoch()
+                Thread.sleep(1000)
+            } while (worldMap.animalStorage.getAllAnimals().isEmpty().not())
+        } catch (e: InterruptedException) {
+            //TODO simulation loop interrupted
+        } finally {
+            if (simulationProperties.statisticsFile != null) {
+                statisticsProvider.saveToFile(simulationProperties.statisticsFile)
+            }
+        }
     }
 
 }

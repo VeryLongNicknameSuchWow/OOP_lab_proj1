@@ -1,5 +1,7 @@
 package pl.rynbou.ooplab
 
+import java.io.File
+
 
 data class SimulationProperties(
     val mapMode: MapMode,
@@ -22,4 +24,6 @@ data class SimulationProperties(
     val mutationAmountLowerBound: Int,
     val mutationAmountUpperBound: Int,
     val genomeLength: Int,
+
+    val statisticsFile: File?
 )

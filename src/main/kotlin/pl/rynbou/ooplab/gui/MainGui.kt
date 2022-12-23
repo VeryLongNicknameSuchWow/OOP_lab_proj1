@@ -74,8 +74,6 @@ class MainGui : Application() {
             font = Font.font(null, FontWeight.BOLD, 20.0)
 
             setOnAction {
-                val statisticsFile = file //TODO can be null
-
                 val simulationProperties = SimulationProperties(
                     mapModeComboBox.value,
                     mapWidthSpinner.value,
@@ -93,10 +91,12 @@ class MainGui : Application() {
                     animalMutationModeComboBox.value,
                     mutationAmountLowerBoundSpinner.value,
                     mutationAmountUpperBoundSpinner.value,
-                    genomeLengthSpinner.value
+                    genomeLengthSpinner.value,
+                    file
                 )
-                println(simulationProperties)
-                TODO("Create and start a simulation")
+                val simulation = Simulation(simulationProperties)
+                val simulationThread = Thread(simulation)
+                simulationThread.start()
             }
         }
 
