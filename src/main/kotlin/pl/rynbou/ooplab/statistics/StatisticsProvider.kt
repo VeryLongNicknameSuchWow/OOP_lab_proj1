@@ -5,18 +5,18 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class StatisticsProvider {
+class StatisticsProvider(val worldMap: WorldMap) {
     private val simulationStatistics: MutableList<SimulationStatistics> = mutableListOf()
 
-    fun saveCurrentStatistics(worldMap: WorldMap) {
+    fun saveCurrentStatistics() {
         simulationStatistics.add(
             SimulationStatistics(
-                countAnimals(worldMap),
-                countPlants(worldMap),
-                countFreeFields(worldMap),
-                findDominantGenotype(worldMap),
-                countAverageEnergy(worldMap),
-                countAverageLifespan(worldMap)
+                countAnimals(),
+                countPlants(),
+                countFreeFields(),
+                findDominantGenotype(),
+                countAverageEnergy(),
+                countAverageLifespan()
             )
         )
     }
@@ -44,15 +44,15 @@ class StatisticsProvider {
         FileOutputStream(file).apply { writeCsv(simulationStatistics) }
     }
 
-    private fun countAnimals(worldMap: WorldMap): Int {
+    private fun countAnimals(): Int {
         return worldMap.animalStorage.getAnimalsCount()
     }
 
-    private fun countPlants(worldMap: WorldMap): Int {
+    private fun countPlants(): Int {
         return worldMap.plantStorage.getPlantsCount()
     }
 
-    private fun countFreeFields(worldMap: WorldMap): Int {
+    private fun countFreeFields(): Int {
         return worldMap.animalStorage
             .getOccupiedPositions()
             .union(
@@ -62,18 +62,18 @@ class StatisticsProvider {
             .size
     }
 
-    private fun findDominantGenotype(worldMap: WorldMap) {
+    private fun findDominantGenotype() {
         TODO()
     }
 
-    private fun countAverageEnergy(worldMap: WorldMap): Double {
+    private fun countAverageEnergy(): Double {
         return worldMap.animalStorage
             .getAllAnimals()
             .map { it.energy }
             .average()
     }
 
-    private fun countAverageLifespan(worldMap: WorldMap): Double {
+    private fun countAverageLifespan(): Double {
         return worldMap.deadAnimalStorage
             .getAllAnimals()
             .map { it.age }

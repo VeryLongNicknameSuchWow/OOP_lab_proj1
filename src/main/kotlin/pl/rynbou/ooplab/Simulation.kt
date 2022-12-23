@@ -19,10 +19,10 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     var trackedAnimal: Animal? = null
     var currentEpoch = 0
 
-    val statisticsProvider = StatisticsProvider()
+    val statisticsProvider = StatisticsProvider(worldMap)
 
     fun nextEpoch() {
-        statisticsProvider.saveCurrentStatistics(worldMap)
+        statisticsProvider.saveCurrentStatistics()
         removeDeadAnimals()
         growNewPlants()
         moveAnimals()
@@ -126,6 +126,7 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
             if (simulationProperties.statisticsFile != null) {
                 statisticsProvider.saveToFile(simulationProperties.statisticsFile)
             }
+            println("Simulation ended")
         }
     }
 
