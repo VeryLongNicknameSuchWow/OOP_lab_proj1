@@ -29,27 +29,27 @@ class MainGui : Application() {
 
         //TODO adjust default values
 
-        val mapWidthSpinner = Spinner<Int>(2, 100, 50)
-        val mapHeightSpinner = Spinner<Int>(2, 100, 50)
+        val mapWidthSpinner = Spinner<Int>(2, 40, 10)
+        val mapHeightSpinner = Spinner<Int>(2, 40, 10)
 
         val plantGrowthModeComboBox = ComboBox<PlantGrowthMode>().apply {
             items.addAll(PlantGrowthMode.values())
             selectionModel.select(PlantGrowthMode.values().first())
         }
 
-        val initialPlantsSpinner = Spinner<Int>(2, 100, 50)
+        val initialPlantsSpinner = Spinner<Int>(2, 100, 5)
         val plantEnergySpinner = Spinner<Int>(2, 100, 50)
-        val dailyPlantsSpinner = Spinner<Int>(2, 100, 50)
+        val dailyPlantsSpinner = Spinner<Int>(2, 100, 5)
 
         val animalBehaviourModeComboBox = ComboBox<AnimalBehaviourMode>().apply {
             items.addAll(AnimalBehaviourMode.values())
             selectionModel.select(AnimalBehaviourMode.values().first())
         }
 
-        val initialAnimalsSpinner = Spinner<Int>(2, 100, 50)
+        val initialAnimalsSpinner = Spinner<Int>(2, 100, 10)
         val initialAnimalEnergySpinner = Spinner<Int>(2, 100, 50)
-        val fullEnergyThresholdSpinner = Spinner<Int>(2, 100, 50)
-        val moveEnergyCostSpinner = Spinner<Int>(2, 100, 50)
+        val fullEnergyThresholdSpinner = Spinner<Int>(2, 200, 100)
+        val moveEnergyCostSpinner = Spinner<Int>(2, 100, 30)
         val copulationEnergyCostSpinner = Spinner<Int>(2, 100, 50)
 
         val animalMutationModeComboBox = ComboBox<AnimalMutationMode>().apply {

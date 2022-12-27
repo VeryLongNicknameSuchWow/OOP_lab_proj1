@@ -18,7 +18,6 @@ class MapGui(
         padding = Insets(20.0)
     }
     val scene = Scene(root)
-    val rect = Rectangle(50.0, 50.0)
 
     override fun start(primaryStage: Stage) {
         primaryStage.scene = scene
@@ -34,6 +33,7 @@ class MapGui(
 
     fun drawGrass() {
         for (occupiedPosition in worldMap.plantStorage.getOccupiedPositions()) {
+            val rect = Rectangle(50.0, 50.0)
             rect.style = "-fx-background-color: #FF0000;"
             root.add(rect, occupiedPosition.x, occupiedPosition.y)
         }

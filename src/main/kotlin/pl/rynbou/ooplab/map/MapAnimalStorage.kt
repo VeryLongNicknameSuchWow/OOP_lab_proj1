@@ -28,6 +28,9 @@ open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
     fun removeAnimal(animal: Animal) {
         animals.remove(animal)
         animalMap[animal.position]?.remove(animal)
+        if (animalMap[animal.position]?.isEmpty() == true) {
+            animalMap.remove(animal.position)
+        }
     }
 
     fun getAnimalsAt(vector2D: MapVector2D): NavigableSet<Animal> {
