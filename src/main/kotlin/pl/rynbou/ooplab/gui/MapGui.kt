@@ -7,10 +7,12 @@ import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.shape.Rectangle
 import javafx.stage.Stage
+import pl.rynbou.ooplab.Simulation
 import pl.rynbou.ooplab.map.WorldMap
 
 class MapGui(
-    val worldMap: WorldMap
+    val worldMap: WorldMap,
+    val simulation: Simulation
 ) : Application() {
     val root = GridPane().apply {
         hgap = 10.0
@@ -20,6 +22,10 @@ class MapGui(
     val scene = Scene(root)
 
     override fun start(primaryStage: Stage) {
+        primaryStage.setOnCloseRequest {
+            simulation.ended = true
+        }
+
         primaryStage.scene = scene
         primaryStage.show()
     }

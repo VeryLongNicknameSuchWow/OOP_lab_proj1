@@ -23,7 +23,16 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     var currentEpoch = 0
 
     val statisticsProvider = StatisticsProvider(worldMap)
-    val mapGui = MapGui(worldMap)
+    val thread = Thread.currentThread()
+    val mapGui = MapGui(worldMap, this)
+
+    var paused = false
+        @Synchronized get
+        @Synchronized set
+
+    var ended = false
+        @Synchronized get
+        @Synchronized set
 
     fun nextEpoch() {
         statisticsProvider.saveCurrentStatistics()
@@ -161,9 +170,11 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
 
         try {
             do {
-                nextEpoch()
+                if (!paused) {
+                    nextEpoch()
+                }
                 Thread.sleep(1000)
-            } while (worldMap.animalStorage.getAllAnimals().isEmpty().not())
+            } while (worldMap.animalStorage.getAllAnimals().isEmpty().not() && !ended)
         } catch (e: InterruptedException) {
             //TODO simulation loop interrupted
         } finally {
@@ -173,5 +184,4 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
             println("Simulation ended")
         }
     }
-
 }
