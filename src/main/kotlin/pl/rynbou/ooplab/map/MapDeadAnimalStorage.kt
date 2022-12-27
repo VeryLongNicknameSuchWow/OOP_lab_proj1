@@ -4,6 +4,7 @@ import pl.rynbou.ooplab.SimulationProperties
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
 import kotlin.Double.Companion.POSITIVE_INFINITY
+import kotlin.math.abs
 import kotlin.random.Random
 
 class MapDeadAnimalStorage(simulationProperties: SimulationProperties) : MapAnimalStorage(simulationProperties) {
@@ -25,8 +26,8 @@ class MapDeadAnimalStorage(simulationProperties: SimulationProperties) : MapAnim
 
         for (i in 1..maxOf(simulationProperties.mapHeight, simulationProperties.mapWidth)) {
             val newPosition = MapVector2D(
-                Random.nextInt() % simulationProperties.mapWidth,
-                Random.nextInt() % simulationProperties.mapHeight
+                abs(Random.nextInt()) % simulationProperties.mapWidth,
+                abs(Random.nextInt()) % simulationProperties.mapHeight
             )
 
             if (deathStats.getOrPut(newPosition) { 0 } < bestStat) {
