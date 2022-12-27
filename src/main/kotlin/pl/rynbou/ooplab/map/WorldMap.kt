@@ -19,7 +19,7 @@ class WorldMap(
 ) {
     val animalStorage = MapAnimalStorage(simulationProperties)
     val deadAnimalStorage = MapDeadAnimalStorage(simulationProperties)
-    val plantStorage = MapPlantStorage()
+    val plantStorage = MapPlantStorage(simulationProperties)
 
     val mapMoveProvider: MapMoveProvider = mapMode.toProvider(simulationProperties, this)
     val plantGrowthProvider: PlantGrowthProvider = plantGrowthMode.toProvider(simulationProperties, deadAnimalStorage)

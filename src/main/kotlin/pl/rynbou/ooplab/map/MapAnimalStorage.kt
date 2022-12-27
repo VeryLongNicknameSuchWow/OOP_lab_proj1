@@ -10,6 +10,13 @@ open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
     private val animalMap: MutableMap<MapVector2D, NavigableSet<Animal>> = HashMap()
 
     open fun addAnimal(animal: Animal) {
+        if (animal.position.x < 0 || animal.position.y < 0) {
+            throw RuntimeException("Animal has negative position")
+        }
+        if (animal.position.x >= simulationProperties.mapWidth || animal.position.y >= simulationProperties.mapHeight) {
+            throw RuntimeException("Animal has negative position")
+        }
+
         animals.add(animal)
         animalMap.getOrPut(animal.position) {
             TreeSet(compareByDescending {
