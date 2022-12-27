@@ -5,7 +5,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class StatisticsProvider(val worldMap: WorldMap) {
+class StatisticsProvider(private val worldMap: WorldMap) {
     private val simulationStatistics: MutableList<SimulationStatistics> = mutableListOf()
 
     fun saveCurrentStatistics() {
@@ -53,7 +53,7 @@ class StatisticsProvider(val worldMap: WorldMap) {
     }
 
     private fun countFreeFields(): Int {
-        return worldMap.animalStorage
+        return worldMap.simulationProperties.mapWidth * worldMap.simulationProperties.mapHeight - worldMap.animalStorage
             .getOccupiedPositions()
             .union(
                 worldMap.plantStorage
