@@ -108,6 +108,7 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
         worldMap.animalStorage.getAllAnimals()
             .forEach {
                 apply {
+                    it.cardinalDirection.rotate(it.genome[it.currentGeneIndex].rotation)
                     worldMap.animalBehaviourProvider.setNextGene(it)
                 }
             }
