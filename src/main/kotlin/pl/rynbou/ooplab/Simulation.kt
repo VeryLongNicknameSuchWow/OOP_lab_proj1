@@ -34,6 +34,7 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
         eatPlants()
         breedAnimals()
         advanceTime() // w którym miejscu to powinno być?
+        removeDeadAnimals()
         // Koniec epoki
         Platform.runLater {
             mapGui.clear()
@@ -56,13 +57,9 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     }
 
     private fun removeDeadAnimals() {
-        val deadAnimals = mutableListOf<Animal>()
+        val toRemove = worldMap.animalStorage.getAllAnimals().filter { it.energy <= 0 }
 
-        for (animal in worldMap.animalStorage.getAllAnimals().filter { it.energy <= 0 }) {
-            deadAnimals.add(animal)
-        }
-
-        for (animal in deadAnimals) {
+        for (animal in toRemove) {
             worldMap.deadAnimalStorage.addAnimal(animal)
             worldMap.animalStorage.removeAnimal(animal)
         }
@@ -108,7 +105,7 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
         worldMap.animalStorage.getAllAnimals()
             .forEach {
                 apply {
-                    it.cardinalDirection.rotate(it.genome[it.currentGeneIndex].rotation)
+                    it.cardinalDirection = it.cardinalDirection.rotate(it.genome[it.currentGeneIndex].rotation)
                     worldMap.animalBehaviourProvider.setNextGene(it)
                 }
             }
@@ -136,21 +133,20 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
                 continue
             }
 
-            val newAnimal: Animal? = animalsAtPosition
-                .lower(
-                    worldMap.animalStorage
-                        .getAnimalsAt(position)
-                        .first()
-                )
-                ?.createChild(
-                    worldMap.animalStorage
-                        .getAnimalsAt(position)
-                        .first()
-                )
-                ?.apply {
-                    worldMap.animalStorage.addAnimal(this)
-                    worldMap.animalMutationProvider.mutate(this)
-                }
+            val dominantParent = animalsAtPosition.first()
+
+            val secondParent = animalsAtPosition.higher(dominantParent)
+
+            if (secondParent == null || secondParent.energy < simulationProperties.fullEnergyThreshold) {
+                continue
+            }
+
+            val newAnimal: Animal = secondParent.createChild(dominantParent)
+
+            newAnimal.apply {
+                worldMap.animalStorage.addAnimal(this)
+                worldMap.animalMutationProvider.mutate(this)
+            }
 
             // Inform GUI
         }

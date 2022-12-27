@@ -3,6 +3,7 @@ package pl.rynbou.ooplab.element.animal
 import pl.rynbou.ooplab.SimulationProperties
 import pl.rynbou.ooplab.element.MapElementCardinalDirection
 import pl.rynbou.ooplab.element.MapVector2D
+import java.util.*
 import kotlin.random.Random
 
 data class Animal(
@@ -16,6 +17,7 @@ data class Animal(
     val genome: MutableList<AnimalMoveGene>,
     var currentGeneIndex: Int
 ) {
+    val uuid = UUID.randomUUID()
 
     fun createChild(other: Animal): Animal {
         if (this.simulationProperties != other.simulationProperties) {
@@ -49,5 +51,18 @@ data class Animal(
 
     fun genomeToString(): String {
         return genome.map { it.rotation }.joinToString("")
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Animal) return false
+
+        if (uuid != other.uuid) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return uuid?.hashCode() ?: 0
     }
 }
