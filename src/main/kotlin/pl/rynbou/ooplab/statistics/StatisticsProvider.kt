@@ -1,5 +1,6 @@
 package pl.rynbou.ooplab.statistics
 
+import pl.rynbou.ooplab.element.animal.Animal
 import pl.rynbou.ooplab.map.WorldMap
 import java.io.File
 import java.io.FileOutputStream
@@ -62,8 +63,13 @@ class StatisticsProvider(val worldMap: WorldMap) {
             .size
     }
 
-    private fun findDominantGenotype() {
-//        TODO()
+    private fun findDominantGenotype(): String {
+        return worldMap.animalStorage
+            .getAllAnimals()
+            .map { it.genomeToString() }
+            .groupBy { it }
+            .maxBy { it.value.size }
+            .key
     }
 
     private fun countAverageEnergy(): Double {

@@ -46,4 +46,8 @@ data class Animal(
 
         return child
     }
+
+    fun genomeToString(): String {
+        return genome.toString()
+    }
 }
