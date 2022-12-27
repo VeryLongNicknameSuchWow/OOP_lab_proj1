@@ -1,8 +1,11 @@
 package pl.rynbou.ooplab
 
+import javafx.application.Platform
+import javafx.stage.Stage
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.element.animal.Animal
 import pl.rynbou.ooplab.element.plant.Plant
+import pl.rynbou.ooplab.gui.MapGui
 import pl.rynbou.ooplab.map.WorldMap
 import pl.rynbou.ooplab.statistics.StatisticsProvider
 
@@ -20,6 +23,7 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     var currentEpoch = 0
 
     val statisticsProvider = StatisticsProvider(worldMap)
+    val mapGui = MapGui(worldMap)
 
     fun nextEpoch() {
         statisticsProvider.saveCurrentStatistics()
@@ -31,6 +35,11 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
         breedAnimals()
         advanceTime() // w którym miejscu to powinno być?
         // Koniec epoki
+        Platform.runLater {
+            mapGui.clear()
+            mapGui.drawGrass()
+            mapGui.drawAnimals()
+        }
     }
 
     private fun advanceTime() {
@@ -147,6 +156,12 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     }
 
     override fun run() {
+        Platform.runLater {
+            val stage = Stage()
+            mapGui.start(stage)
+        }
+
+
         try {
             do {
                 nextEpoch()

@@ -63,7 +63,7 @@ class StatisticsProvider(val worldMap: WorldMap) {
     }
 
     private fun findDominantGenotype() {
-        TODO()
+//        TODO()
     }
 
     private fun countAverageEnergy(): Double {
