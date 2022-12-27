@@ -1,8 +1,11 @@
 package pl.rynbou.ooplab
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.io.File
 
 
+@Serializable
 data class SimulationProperties(
     val mapMode: MapMode,
     val mapWidth: Int,
@@ -25,5 +28,6 @@ data class SimulationProperties(
     val mutationAmountUpperBound: Int,
     val genomeLength: Int,
 
-    val statisticsFile: File?
+    @Transient
+    val statisticsFile: File? = null
 )

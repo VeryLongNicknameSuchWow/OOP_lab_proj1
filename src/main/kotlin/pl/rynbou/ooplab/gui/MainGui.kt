@@ -12,8 +12,11 @@ import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 import javafx.stage.FileChooser
 import javafx.stage.Stage
+import kotlinx.serialization.json.Json
 import pl.rynbou.ooplab.*
 import java.io.File
+import java.io.FileOutputStream
+import java.nio.file.Files
 import kotlin.system.exitProcess
 
 class MainGui : Application() {
@@ -75,33 +78,68 @@ class MainGui : Application() {
             }
         }
 
+        fun getProperties(): SimulationProperties {
+            return SimulationProperties(
+                mapModeComboBox.value,
+                mapWidthSpinner.value,
+                mapHeightSpinner.value,
+                plantGrowthModeComboBox.value,
+                initialPlantsSpinner.value,
+                plantEnergySpinner.value,
+                dailyPlantsSpinner.value,
+                animalBehaviourModeComboBox.value,
+                initialAnimalsSpinner.value,
+                initialAnimalEnergySpinner.value,
+                fullEnergyThresholdSpinner.value,
+                moveEnergyCostSpinner.value,
+                copulationEnergyCostSpinner.value,
+                animalMutationModeComboBox.value,
+                mutationAmountLowerBoundSpinner.value,
+                mutationAmountUpperBoundSpinner.value,
+                genomeLengthSpinner.value,
+                file
+            )
+        }
+
+        fun startSimulation(simulationProperties: SimulationProperties) {
+            val simulation = Simulation(simulationProperties)
+            val simulationThread = Thread(simulation)
+            simulationThread.start()
+        }
+
         val startSimulationButton = Button("Start simulation").apply {
             font = Font.font(null, FontWeight.BOLD, 20.0)
 
             setOnAction {
-                val simulationProperties = SimulationProperties(
-                    mapModeComboBox.value,
-                    mapWidthSpinner.value,
-                    mapHeightSpinner.value,
-                    plantGrowthModeComboBox.value,
-                    initialPlantsSpinner.value,
-                    plantEnergySpinner.value,
-                    dailyPlantsSpinner.value,
-                    animalBehaviourModeComboBox.value,
-                    initialAnimalsSpinner.value,
-                    initialAnimalEnergySpinner.value,
-                    fullEnergyThresholdSpinner.value,
-                    moveEnergyCostSpinner.value,
-                    copulationEnergyCostSpinner.value,
-                    animalMutationModeComboBox.value,
-                    mutationAmountLowerBoundSpinner.value,
-                    mutationAmountUpperBoundSpinner.value,
-                    genomeLengthSpinner.value,
-                    file
-                )
-                val simulation = Simulation(simulationProperties)
-                val simulationThread = Thread(simulation)
-                simulationThread.start()
+                val simulationProperties = getProperties()
+                startSimulation(simulationProperties)
+            }
+        }
+
+        val savePropertiesButton = Button("Save settings\nto file").apply {
+            font = Font.font(null, FontWeight.BOLD, 20.0)
+            setOnAction {
+                file = statisticsFileChooser.showOpenDialog(primaryStage)
+                if (file != null) {
+                    val fileOutputStream = FileOutputStream(file)
+                    val bufferedWriter = fileOutputStream.bufferedWriter()
+                    val simulationProperties = getProperties()
+                    val propertiesAsStr = Json.encodeToString(SimulationProperties.serializer(), simulationProperties)
+                    bufferedWriter.write(propertiesAsStr)
+                    bufferedWriter.flush()
+                }
+            }
+        }
+
+        val runPropertiesButton = Button("Run settings\nfrom file").apply {
+            font = Font.font(null, FontWeight.BOLD, 20.0)
+            setOnAction {
+                file = statisticsFileChooser.showOpenDialog(primaryStage)
+                if (file != null) {
+                    val propertiesAsStr = Files.readString(file!!.toPath())
+                    val simulationProperties = Json.decodeFromString(SimulationProperties.serializer(), propertiesAsStr)
+                    startSimulation(simulationProperties)
+                }
             }
         }
 
@@ -205,6 +243,10 @@ class MainGui : Application() {
             rowIndex++
             GridPane.setColumnSpan(startSimulationButton, 2)
             add(startSimulationButton, 0, rowIndex)
+
+            rowIndex++
+            add(savePropertiesButton, 0, rowIndex)
+            add(runPropertiesButton, 1, rowIndex)
         }
 
         val scene = Scene(root)
