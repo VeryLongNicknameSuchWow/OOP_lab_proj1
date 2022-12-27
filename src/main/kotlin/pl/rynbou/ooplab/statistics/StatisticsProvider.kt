@@ -1,6 +1,5 @@
 package pl.rynbou.ooplab.statistics
 
-import pl.rynbou.ooplab.element.animal.Animal
 import pl.rynbou.ooplab.map.WorldMap
 import java.io.File
 import java.io.FileOutputStream
@@ -26,7 +25,7 @@ class StatisticsProvider(val worldMap: WorldMap) {
 
         fun OutputStream.writeCsv(simulationStatisticsList: List<SimulationStatistics>) {
             val writer = bufferedWriter()
-            writer.write(""""Animals";"Plants";"Free Fields";"Dominant Genotype";"Avg. Energy";"Avg. Lifespan"""")
+            writer.write("Animals;Plants;Free Fields;Dominant Genotype;Avg. Energy;Avg. Lifespan")
             writer.newLine()
             simulationStatisticsList.forEach {
                 writer.write(

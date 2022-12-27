@@ -22,10 +22,6 @@ enum class AnimalMoveGene(val rotation: Int) {
         return AnimalMoveGene.values()[(this.ordinal + 7) % 8]
     }
 
-    override fun toString(): String {
-        return this.ordinal.toString()
-    }
-
     companion object {
         private val cachedValues = values()
         private val cachedSize = cachedValues.size

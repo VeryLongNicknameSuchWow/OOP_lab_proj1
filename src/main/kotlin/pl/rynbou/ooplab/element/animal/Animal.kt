@@ -48,6 +48,6 @@ data class Animal(
     }
 
     fun genomeToString(): String {
-        return genome.toString()
+        return genome.map { it.rotation }.joinToString("")
     }
 }
