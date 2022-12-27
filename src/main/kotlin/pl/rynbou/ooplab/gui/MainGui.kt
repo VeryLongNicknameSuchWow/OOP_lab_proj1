@@ -14,9 +14,14 @@ import javafx.stage.FileChooser
 import javafx.stage.Stage
 import pl.rynbou.ooplab.*
 import java.io.File
+import kotlin.system.exitProcess
 
 class MainGui : Application() {
     override fun start(primaryStage: Stage) {
+        primaryStage.setOnCloseRequest {
+            exitProcess(0)
+        }
+
         val mapModeComboBox = ComboBox<MapMode>().apply {
             items.addAll(MapMode.values())
             selectionModel.select(MapMode.values().first())
