@@ -4,6 +4,7 @@ import pl.rynbou.ooplab.SimulationProperties
 import pl.rynbou.ooplab.element.MapVector2D
 import pl.rynbou.ooplab.map.MapDeadAnimalStorage
 import pl.rynbou.ooplab.map.MapPlantStorage
+import kotlin.math.abs
 import kotlin.random.Random
 
 sealed class PlantGrowthProvider(
@@ -36,8 +37,8 @@ sealed class PlantGrowthProvider(
         override fun getRandomFreePosition(
             mapPlantStorage: MapPlantStorage, mapDeadAnimalStorage: MapDeadAnimalStorage?
         ): MapVector2D {
-            val x = Random.nextInt() % width
-            val y = java.util.Random().nextGaussian(equator, height / 5.toDouble()).toInt() % height
+            val x = abs(Random.nextInt()) % width
+            val y = abs(java.util.Random().nextGaussian(equator, height / 5.toDouble()).toInt()) % height
             val position = MapVector2D(x, y)
 
             return if (mapPlantStorage.getPlant(position) == null) position
