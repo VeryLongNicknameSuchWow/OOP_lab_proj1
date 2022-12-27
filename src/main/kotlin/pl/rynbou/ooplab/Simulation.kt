@@ -47,7 +47,13 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     }
 
     private fun removeDeadAnimals() {
+        val deadAnimals = mutableListOf<Animal>()
+
         for (animal in worldMap.animalStorage.getAllAnimals().filter { it.energy <= 0 }) {
+            deadAnimals.add(animal)
+        }
+
+        for (animal in deadAnimals) {
             worldMap.deadAnimalStorage.addAnimal(animal)
             worldMap.animalStorage.removeAnimal(animal)
         }
@@ -55,17 +61,34 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
 
     private fun moveAnimals() {
         val newPositions: MutableList<MapVector2D> = mutableListOf()
+        val newPositionsMap = HashMap<Animal, MapVector2D>()
 
         for (animal in worldMap.animalStorage.getAllAnimals()) {
             val newPosition: MapVector2D = worldMap.mapMoveProvider.calculateNewPosition(animal)
 
-            newPositions.add(newPosition)
+            if (animal.position != newPosition) {
+                newPositions.add(newPosition)
+                newPositionsMap[animal] = newPosition
+            }
+        }
 
+        //remove
+        for (animal in newPositionsMap.keys) {
             worldMap.animalStorage.removeAnimal(animal)
+        }
 
-            animal.position = newPosition
-            animal.energy -= simulationProperties.moveEnergyCost
+        //modify
+        val modifiedAnimals = mutableListOf<Animal>()
+        newPositionsMap.forEach { (animal, newPos) ->
+            run {
+                animal.position = newPos
+                animal.energy -= simulationProperties.moveEnergyCost
+                modifiedAnimals.add(animal)
+            }
+        }
 
+        //add
+        for (animal in modifiedAnimals) {
             worldMap.animalStorage.addAnimal(animal)
         }
 
@@ -84,7 +107,12 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
     private fun eatPlants() {
         for (position in worldMap.animalStorage.getOccupiedPositions())
             if (worldMap.plantStorage.getPlant(position) != null) {
-                worldMap.animalStorage.getAnimalsAt(position).first().energy += simulationProperties.plantEnergy
+                val animalsAtPosition = worldMap.animalStorage.getAnimalsAt(position)
+                if (animalsAtPosition.isEmpty()) {
+                    continue
+                }
+
+                animalsAtPosition.first().energy += simulationProperties.plantEnergy
                 worldMap.plantStorage.removePlant(position)
             }
 
@@ -93,8 +121,12 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
 
     private fun breedAnimals() {
         for (position in worldMap.animalStorage.getOccupiedPositions()) {
-            val newAnimal: Animal? = worldMap.animalStorage
-                .getAnimalsAt(position)
+            val animalsAtPosition = worldMap.animalStorage.getAnimalsAt(position)
+            if (animalsAtPosition.size <= 1) {
+                continue
+            }
+
+            val newAnimal: Animal? = animalsAtPosition
                 .lower(
                     worldMap.animalStorage
                         .getAnimalsAt(position)
