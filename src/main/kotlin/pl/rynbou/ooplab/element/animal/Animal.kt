@@ -40,7 +40,7 @@ data class Animal(
             energy = this.simulationProperties.initialAnimalEnergy,
             children = 0,
             genome = MutableList(genomeSize) {
-                val index = if (takeThisFront) it else genomeSize - it
+                val index = if (takeThisFront) it else genomeSize - it - 1
                 if (it < thisShare) this.genome[index] else other.genome[index]
             },
             currentGeneIndex = 0

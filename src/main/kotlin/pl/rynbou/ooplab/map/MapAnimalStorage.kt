@@ -21,6 +21,9 @@ open class MapAnimalStorage(val simulationProperties: SimulationProperties) {
         animalMap.getOrPut(animal.position) {
             TreeSet(compareByDescending {
                 it.energy
+                it.age
+                it.children
+                it.uuid
             })
         }.add(animal)
     }
