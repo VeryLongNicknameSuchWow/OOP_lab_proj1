@@ -19,6 +19,14 @@ class MapGui(
     val worldMap: WorldMap,
     val simulation: Simulation
 ) : Application() {
+
+    val totalAnimalsLabel = Label("Not available")
+    val totalPlantsAmount = Label("Not available")
+    val freeFieldsAmountLabel = Label("Not available")
+    val topGenotypeLabel = Label("Not available")
+    val averageEnergyLabel = Label("Not available")
+    val averageLifespanLabel = Label("Not available")
+
     val root = GridPane().apply {
         hgap = 10.0
         vgap = 10.0
@@ -31,6 +39,8 @@ class MapGui(
             }
         }
 
+        var rowIndex = 0
+        val lastColumn = worldMap.simulationProperties.mapWidth
         val pauseSimulationButton = Button("Pause simulation").apply {
             font = Font.font(null, FontWeight.BOLD, 20.0)
 
@@ -39,8 +49,9 @@ class MapGui(
                 text = if (simulation.paused) "Unpause simulation" else "Pause simulation"
             }
         }
-        add(pauseSimulationButton, worldMap.simulationProperties.mapWidth, 0)
+        add(pauseSimulationButton, lastColumn, rowIndex)
 
+        rowIndex++
         val endSimulationButton = Button("End simulation").apply {
             font = Font.font(null, FontWeight.BOLD, 20.0)
 
@@ -48,7 +59,31 @@ class MapGui(
                 closeWindow()
             }
         }
-        add(endSimulationButton, worldMap.simulationProperties.mapWidth, 1)
+        add(endSimulationButton, lastColumn, rowIndex)
+
+        rowIndex++
+        add(Label("Total animals: "), lastColumn, rowIndex)
+        add(totalAnimalsLabel, lastColumn + 1, rowIndex)
+
+        rowIndex++
+        add(Label("Total plants: "), lastColumn, rowIndex)
+        add(totalPlantsAmount, lastColumn + 1, rowIndex)
+
+        rowIndex++
+        add(Label("Free fields: "), lastColumn, rowIndex)
+        add(freeFieldsAmountLabel, lastColumn + 1, rowIndex)
+
+        rowIndex++
+        add(Label("Top genome: "), lastColumn, rowIndex)
+        add(topGenotypeLabel, lastColumn + 1, rowIndex)
+
+        rowIndex++
+        add(Label("Average energy: "), lastColumn, rowIndex)
+        add(averageEnergyLabel, lastColumn + 1, rowIndex)
+
+        rowIndex++
+        add(Label("Average lifespan: "), lastColumn, rowIndex)
+        add(averageLifespanLabel, lastColumn + 1, rowIndex)
     }
     val scene = Scene(root)
     val trackingGuis = mutableListOf<TrackingGui>()
@@ -102,8 +137,25 @@ class MapGui(
         trackingGuis.forEach { it.update() }
     }
 
+    fun updateDisplayedStats() {
+        try {
+            val stats = simulation.statisticsProvider.simulationStatistics.last()
+            totalAnimalsLabel.text = stats.animalsCount.toString()
+            totalPlantsAmount.text = stats.plantsCount.toString()
+            freeFieldsAmountLabel.text = stats.freeFieldsCount.toString()
+            topGenotypeLabel.text = stats.dominantGenotype
+            averageEnergyLabel.text = "%.2f".format(stats.averageEnergy)
+            averageLifespanLabel.text = "%.2f".format(stats.averageLifeSpan)
+        } catch (_: NoSuchElementException) {
+            //just in case
+        }
+    }
+
     fun clear() {
-        root.children.removeIf { it !is Button }
+        root.children.removeIf {
+            GridPane.getColumnIndex(it) < worldMap.simulationProperties.mapWidth
+            //dobra stała nie jest zła
+        }
     }
 
     fun closeWindow() {

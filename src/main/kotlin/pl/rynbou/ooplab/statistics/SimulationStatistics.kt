@@ -4,7 +4,7 @@ data class SimulationStatistics(
     val animalsCount: Int,
     val plantsCount: Int,
     val freeFieldsCount: Int,
-    val dominantGenotype: Any,
+    val dominantGenotype: String,
     val averageEnergy: Double,
     val averageLifeSpan: Double,
 ) {

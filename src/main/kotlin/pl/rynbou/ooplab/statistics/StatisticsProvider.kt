@@ -6,7 +6,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class StatisticsProvider(private val worldMap: WorldMap) {
-    private val simulationStatistics: MutableList<SimulationStatistics> = mutableListOf()
+    val simulationStatistics: MutableList<SimulationStatistics> = mutableListOf()
 
     fun saveCurrentStatistics() {
         simulationStatistics.add(

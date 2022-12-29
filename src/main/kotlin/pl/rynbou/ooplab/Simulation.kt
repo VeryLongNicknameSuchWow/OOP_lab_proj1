@@ -50,6 +50,7 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
             mapGui.drawGrass()
             mapGui.drawAnimals()
             mapGui.updateTracking()
+            mapGui.updateDisplayedStats()
         }
     }
 
