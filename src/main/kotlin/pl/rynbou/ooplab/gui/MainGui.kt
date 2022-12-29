@@ -60,9 +60,9 @@ class MainGui : Application() {
             selectionModel.select(AnimalMutationMode.values().first())
         }
 
-        val mutationAmountLowerBoundSpinner = Spinner<Int>(2, 100, 50)
-        val mutationAmountUpperBoundSpinner = Spinner<Int>(2, 100, 50)
-        val genomeLengthSpinner = Spinner<Int>(2, 100, 50)
+        val mutationAmountLowerBoundSpinner = Spinner<Int>(1, 10, 5)
+        val mutationAmountUpperBoundSpinner = Spinner<Int>(10, 50, 10)
+        val genomeLengthSpinner = Spinner<Int>(3, 30, 10)
 
         val statisticsFilePath = Label("No file selected")
         val statisticsFileChooser = FileChooser()
