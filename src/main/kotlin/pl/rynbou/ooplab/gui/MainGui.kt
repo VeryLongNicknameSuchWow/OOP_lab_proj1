@@ -50,9 +50,9 @@ class MainGui : Application() {
         }
 
         val initialAnimalsSpinner = Spinner<Int>(2, 100, 10)
-        val initialAnimalEnergySpinner = Spinner<Int>(2, 100, 50)
+        val initialAnimalEnergySpinner = Spinner<Int>(2, 100, 60)
         val fullEnergyThresholdSpinner = Spinner<Int>(2, 200, 100)
-        val moveEnergyCostSpinner = Spinner<Int>(2, 100, 30)
+        val moveEnergyCostSpinner = Spinner<Int>(2, 100, 20)
         val copulationEnergyCostSpinner = Spinner<Int>(2, 100, 50)
 
         val animalMutationModeComboBox = ComboBox<AnimalMutationMode>().apply {
