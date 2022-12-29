@@ -51,6 +51,7 @@ class MapGui(
         add(endSimulationButton, worldMap.simulationProperties.mapWidth, 1)
     }
     val scene = Scene(root)
+    val trackingGuis = mutableListOf<TrackingGui>()
 
     override fun start(primaryStage: Stage) {
         primaryStage.setOnCloseRequest {
@@ -66,6 +67,15 @@ class MapGui(
             val bestAnimal = worldMap.animalStorage.getAnimalsAt(occupiedPosition).first()
             val label = Label().apply {
                 text = bestAnimal?.energy.toString()
+
+                setOnMouseClicked {
+                    if (trackingGuis.any { it.animal == bestAnimal }) {
+                        return@setOnMouseClicked
+                    }
+                    val trackingGui = TrackingGui(bestAnimal)
+                    trackingGui.start(Stage())
+                    trackingGuis.add(trackingGui)
+                }
             }
             root.add(label, occupiedPosition.x, occupiedPosition.y)
         }
@@ -87,11 +97,18 @@ class MapGui(
         }
     }
 
+    fun updateTracking() {
+        trackingGuis.removeIf { it.closed }
+        trackingGuis.forEach { it.update() }
+    }
+
     fun clear() {
         root.children.removeIf { it !is Button }
     }
 
     fun closeWindow() {
+        trackingGuis.forEach { it.closeWindow() }
+
         simulation.ended = true
         val stage = scene.window as Stage
         stage.close()

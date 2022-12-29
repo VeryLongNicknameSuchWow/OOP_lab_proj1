@@ -18,6 +18,8 @@ data class Animal(
     var currentGeneIndex: Int
 ) {
     val uuid = UUID.randomUUID()
+    var plantsEaten = 0
+    var deathEpoch: Int? = null
 
     fun createChild(other: Animal): Animal {
         if (this.simulationProperties != other.simulationProperties) {
