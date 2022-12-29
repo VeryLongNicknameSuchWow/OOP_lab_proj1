@@ -65,11 +65,11 @@ class MainGui : Application() {
         val genomeLengthSpinner = Spinner<Int>(3, 30, 10)
 
         val statisticsFilePath = Label("No file selected")
-        val statisticsFileChooser = FileChooser()
+        val fileChooser = FileChooser()
         var file: File? = null
         val chooseFileButton = Button("Choose statistics file").apply {
             setOnAction {
-                file = statisticsFileChooser.showOpenDialog(primaryStage)
+                file = fileChooser.showSaveDialog(primaryStage)
                 if (file != null) {
                     statisticsFilePath.text = "Selected: " + file!!.canonicalPath
                 } else {
@@ -119,7 +119,7 @@ class MainGui : Application() {
         val savePropertiesButton = Button("Save settings\nto file").apply {
             font = Font.font(null, FontWeight.BOLD, 20.0)
             setOnAction {
-                file = statisticsFileChooser.showOpenDialog(primaryStage)
+                file = fileChooser.showSaveDialog(primaryStage)
                 if (file != null) {
                     val fileOutputStream = FileOutputStream(file)
                     val bufferedWriter = fileOutputStream.bufferedWriter()
@@ -134,7 +134,7 @@ class MainGui : Application() {
         val runPropertiesButton = Button("Run settings\nfrom file").apply {
             font = Font.font(null, FontWeight.BOLD, 20.0)
             setOnAction {
-                file = statisticsFileChooser.showOpenDialog(primaryStage)
+                file = fileChooser.showOpenDialog(primaryStage)
                 if (file != null) {
                     val propertiesAsStr = Files.readString(file!!.toPath())
                     val simulationProperties = Json.decodeFromString(SimulationProperties.serializer(), propertiesAsStr)
