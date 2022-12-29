@@ -70,8 +70,9 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
         val toRemove = worldMap.animalStorage.getAllAnimals().filter { it.energy <= 0 }
 
         for (animal in toRemove) {
-            worldMap.deadAnimalStorage.addAnimal(animal)
             worldMap.animalStorage.removeAnimal(animal)
+            animal.deathEpoch = currentEpoch
+            worldMap.deadAnimalStorage.addAnimal(animal)
         }
     }
 
@@ -129,7 +130,9 @@ class Simulation(private val simulationProperties: SimulationProperties) : Runna
                     continue
                 }
 
-                animalsAtPosition.first().energy += simulationProperties.plantEnergy
+                val animal = animalsAtPosition.first()
+                animal.energy += simulationProperties.plantEnergy
+                animal.plantsEaten += 1
                 worldMap.plantStorage.removePlant(position)
             }
 
