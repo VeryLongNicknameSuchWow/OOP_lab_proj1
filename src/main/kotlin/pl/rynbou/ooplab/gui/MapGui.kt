@@ -62,6 +62,13 @@ class MapGui(
         add(endSimulationButton, lastColumn, rowIndex)
 
         rowIndex++
+        val statisticsMainLabel = Label().apply {
+            text = "Current Statistics:"
+            font = Font.font(null, FontWeight.BOLD, 20.0)
+        }
+        add(statisticsMainLabel, lastColumn, rowIndex)
+
+        rowIndex++
         add(Label("Total animals: "), lastColumn, rowIndex)
         add(totalAnimalsLabel, lastColumn + 1, rowIndex)
 
@@ -84,6 +91,9 @@ class MapGui(
         rowIndex++
         add(Label("Average lifespan: "), lastColumn, rowIndex)
         add(averageLifespanLabel, lastColumn + 1, rowIndex)
+
+        rowIndex++
+        add(Label("(Click on an animal to see individual statistics)"), lastColumn, rowIndex)
     }
     val scene = Scene(root)
     val trackingGuis = mutableListOf<TrackingGui>()
